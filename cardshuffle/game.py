@@ -31,7 +31,8 @@ class Session(object):
         self.summons = []
 
     def identify(self, entity):
-        if not hasattr(entity, 'id'): # woo, O(1) over entity in self.entities
+        if not hasattr(entity, 'id'): # noop if already registered
+            # woo, O(1) over entity in self.entities
             entity.id = len(self.entities)+1
             self.entities.append(entity)
     def __getitem__(self, id):

@@ -54,17 +54,37 @@ def targetable(fun):
 
 
 class Shuffle(basic.LineOnlyReceiver):
+    """Line-based text protocol to play the game and join the lobby server."""
     delimiter = '\n'
+
     def __init__(self):
+        """A client connected. For your convenience he gains a nickname which
+        is likely unique (but does not have to be.)  Players need to set their
+        deck and mark themselves as ready before they are eligible to join the
+        next game.
+
+        """
         self.name = u"Player %d" % PLAYER.next() # need not be unique
         self.ready = False
         self.ingame = False
         self.deck = []
 
     def sendLine(self, data):
+        """Send a message to a client encoded in UTF-8."""
         basic.LineOnlyReceiver.sendLine(self, data.encode('utf-8'))
 
     def lineReceived(self, data):
+        """A client wishes to interact with the server.
+
+        His message shall be sent verbatim to all other clients if prefixed
+        with a colon or otherwise dispatched to the responsible command handler
+        beginning with ``command_``.
+
+        For programming convenience every exclusively numeric command is
+        forwarded to `special_use` indicating the player wishes to use an item
+        from his inventory.
+
+        """
         data = data.strip().decode('utf-8', 'ignore')
         if data.startswith(':'):
             # server-wide messages
