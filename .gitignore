@@ -2,3 +2,4 @@ var/
 dist/
 build/
 *.egg-info/
+twisted/plugins/dropin.cache
