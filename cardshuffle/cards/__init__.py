@@ -36,10 +36,11 @@ class Card:
 
     def apply(self, caster, args):
         """Use a card."""
+        assert self.charges > 0
         if caster.mana < self.mana:
             return # out of mana, exit gracefully
         self.charges -= 1
-        if charges > 0:
+        if self.charges > 0:
             return self
         return None # empty slot
 
