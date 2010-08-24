@@ -191,8 +191,8 @@ class Shuffle(basic.LineOnlyReceiver):
 
     def command_search(self, args):
         """Search for a card by its name."""
-        if len(args) < 4:
-            return u"Search terms must be over three characters."
+        if len(args) < 3:
+            return u"Search terms must be at least three characters."
         self.list_cards(card for card in cards.Card.all()
             if args.lower() in card.name.lower())
 
