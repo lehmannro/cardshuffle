@@ -13,14 +13,7 @@ import operator
 import random
 import string
 
-DECKSIZE = 15
-HANDSIZE = 6
-MAXMANA = 200
-MAXHEALTH = 200
 TICKINTERVAL = 0.02 # 50 fps
-MANAINTERVAL = 1
-DRAWINTERVAL = 30
-REGENINTERVAL = 5
 
 PLAYER = itertools.count(1)
 VALIDCHARS = string.ascii_letters + string.digits + ' '
@@ -123,9 +116,9 @@ class Shuffle(basic.LineOnlyReceiver):
         if self.ready:
             #XXX toggle ready state
             return u"You were already marked as ready."
-        if len(self.deck) != DECKSIZE:
+        if len(self.deck) != self.factory.decksize:
             return (u"Your deck does not match the expected size of %d." %
-                    DECKSIZE)
+                    self.factory.decksize)
         self.ready = True
         self.factory.broadcast(u"%s became ready." % self.name)
         self.factory.check_readiness()
@@ -180,8 +173,8 @@ class Shuffle(basic.LineOnlyReceiver):
     def command_random(self, args):
         """Fill up deck with random cards."""
         stack = list(cards.Card.all())
-        self.deck = deck = random.sample(stack * DECKSIZE, DECKSIZE)
-        #                                      ^^^^^^^^^^
+        self.deck = deck = random.sample(stack * 20, self.factory.decksize)
+        #                                      ^^^^
         #XXX hack to make up for our lack of cards
         self.list_cards(deck)
 
@@ -289,8 +282,17 @@ class Lobby(MulticastServerFactory):
         MulticastServerFactory.stopFactory(self)
         self.broadcast(u"Server is going down for maintenance NOW!")
 
-    def __init__(self, players):
-        self.treshold = players
+    def __init__(self, config):
+        self.treshold = config['players']
+        self.handsize = config['hand']
+        self.decksize = config['deck']
+        self.decklimit = config['decklimit']
+        self.mana = config['mana']
+        self.health = config['health']
+        self.manainterval = config['replenish']
+        self.healthinterval = config['regenerate']
+        self.drawinterval = config['drawgain']
+        self.initialdraws = config['initial-draws']
 
     def check_readiness(self):
         """We have been pinged from one of our clients to check if we can
@@ -309,20 +311,21 @@ class Lobby(MulticastServerFactory):
         players = []
         for connection in connections:
             connection.ingame = player = Player(
-                connection.name, connection.deck,
-                HANDSIZE, MAXMANA, MAXHEALTH) #XXX configurable
+                connection.name, connection.deck, # set by session
+                # set by configuration
+                self.handsize, self.mana, self.health, self.initialdraws)
             players.append(player)
 
         self.broadcast(u"The battle begins..")
         self.game = game.Session(players)
         # mana
         self.mana_beat = task.LoopingCall(self.game.award_mana)
-        self.mana_beat.start(MANAINTERVAL)
+        self.mana_beat.start(self.manainterval)
         # draw points
         self.draw_beat = task.LoopingCall(self.game.award_drawpoints)
-        self.draw_beat.start(DRAWINTERVAL, now=False)
+        self.draw_beat.start(self.drawinterval, now=False)
         #XXX buffs
-        # the main timer, used for high-performance tasks
+        # the main timer, used for high-resolution tasks
         self.beat = beat = task.LoopingCall(self.game.tick)
         beat.start(TICKINTERVAL
             ).addBoth(self.stop_game # notify the server when the game ends
@@ -345,7 +348,7 @@ class Lobby(MulticastServerFactory):
 
 def main(players, port=1030):
     from twisted.internet import reactor
-    factory = Lobby(players)
+    factory = Lobby(dict(players=players))
     reactor.listenTCP(port, factory)
     reactor.run()
 
