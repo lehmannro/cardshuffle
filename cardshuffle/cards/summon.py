@@ -6,9 +6,8 @@ class Summon(Card):
     health = 1
     damage = 0
     speed = 1
-    def apply(self, caster, args):
-        caster.game
-        pass #XXX create summon
+    def cast(self, caster, args):
+        caster.game.summon(self)
 
 class SummonImp(Summon):
     tags = "demonology"

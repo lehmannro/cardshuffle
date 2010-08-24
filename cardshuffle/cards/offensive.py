@@ -5,11 +5,9 @@ from cardshuffle.cards import Card
 class DirectAttackSpell(Card):
     damage = 0
 
-    def apply(self, caster, args):
+    def cast(self, caster, args):
         target = caster.game[int(args)]
-        new = Card.apply(self, caster, args)
         target.inflict(self.damage)
-        return new
 
 class Fireball(DirectAttackSpell):
     mana = 40
