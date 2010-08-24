@@ -4,7 +4,7 @@
 from cardshuffle import game, cards
 from cardshuffle.player import Player
 
-from twisted.internet import reactor, protocol, task
+from twisted.internet import protocol, task
 from twisted.protocols import basic
 
 import functools
@@ -344,6 +344,7 @@ class Lobby(MulticastServerFactory):
         self.game = None
 
 def main(players, port=1030):
+    from twisted.internet import reactor
     factory = Lobby(players)
     reactor.listenTCP(port, factory)
     reactor.run()
