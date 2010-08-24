@@ -234,10 +234,15 @@ class Shuffle(basic.LineOnlyReceiver):
 
     def command_help(self, args):
         """Show this command documentation."""
-        for name, attr in self.__class__.__dict__.iteritems():
-            if name.startswith('command_'):
-                self.sendLine(u"%-8s  %s" %
-                    (name[len('command_'):], attr.__doc__))
+        #XXX caching
+        commands = [(name[len('command_'):], attr.__doc__)
+                    for name, attr in
+                    self.__class__.__dict__.iteritems()
+                    if name.startswith('command_')]
+        commands.append(("N ...", u"Use card at slot ‘N’;"
+            u" might require further arguments (players only.)"))
+        for name, doc in commands:
+            self.sendLine(u"%-8s  %s" % (name, doc))
 
     @ingame
     def special_use(self, args):
