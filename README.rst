@@ -18,8 +18,8 @@ Install the package through the standard Python packaging mechanisms::
 
   python setup.py install
 
-Setuptools will automatically Twisted_ which provides the networking part of
-the software.  It is built against Python 2.6.
+Setuptools will automatically pull in Twisted_ which provides the networking
+part of the software.  It is built against Python 2.6.
 
 .. _Twisted: http://twistedmatrix.com/trac/
 
