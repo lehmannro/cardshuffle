@@ -3,14 +3,14 @@
 import random
 
 class Player(object):
-    def __init__(self, name, deck, handsize, mana, health):
+    def __init__(self, name, deck, handsize, mana, health, draws):
         self.name = name
         self.deck = deck[:]
         self.max_mana = mana
         # managed properties
         self.mana = 0
         self.health = health
-        self.draws = handsize #XXX configurable
+        self.draws = draws
 
         # We could possibly deal all cards but players might wish to draw cards
         # at their leisure, eg. to avoid spells on their hand.
