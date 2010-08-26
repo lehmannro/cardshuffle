@@ -77,3 +77,6 @@ Hacking
 I have tried to separate the game logic from the networking part because I
 would love to control the game through a full-fledged GUI some day in the
 future.  If you feel like hacking something up please contact me.
+
+The software was written without any fancy string building facilities to allow
+easy localization.
