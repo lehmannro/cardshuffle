@@ -84,7 +84,7 @@ class Shuffle(basic.LineOnlyReceiver):
         if data.startswith(':'):
             # server-wide messages
             #XXX party-only messages
-            factory.broadcast(u"%s: %s" % (self.name, data[1:]))
+            self.factory.broadcast(u"%s: %s" % (self.name, data[1:]))
         else:
             command, args = (data.strip() + ' ').split(' ', 1) # nasty hack
             if not command:
