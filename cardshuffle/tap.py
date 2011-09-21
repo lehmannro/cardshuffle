@@ -1,5 +1,6 @@
 # Copyright (C) 2010 Robert Lehmann
 
+import cardshuffle
 from cardshuffle.server import Lobby
 from twisted.python import usage
 from twisted.application import strports
@@ -36,6 +37,10 @@ class Options(usage.Options):
     def postOptions(self):
         if self['initial-draws'] == -1:
             self['initial-draws'] = self['hand']
+    def opt_version(self):
+        print "Cardshuffle version:", cardshuffle.__version__
+        return usage.Options.opt_version(self)
+
 
 def makeService(config):
     t = Lobby(config)
