@@ -56,8 +56,8 @@ class Session(object):
     def award_drawpoints(self):
         """Hand out draw points to all players."""
         for player in self.players:
-            player.award_drawpoint()
+            player.draws += 1
     def award_mana(self):
         """Hand out one mana point to each player."""
         for player in self.players:
-            player.award_mana()
+            player.mana += 1
