@@ -1,4 +1,4 @@
-# Copyright (C) 2010 Robert Lehmann
+# Copyright (C) 2010, 2011 Robert Lehmann
 
 import random
 import operator
@@ -23,7 +23,7 @@ class Player(object):
     def mana():
         fget = operator.attrgetter('_mana')
         def fset(self, value):
-            self._mana = min(max(self._mana, 0), self.max_mana)
+            self._mana = min(max(value, 0), self.max_mana)
         return property(fget, fset)
 
     @apply
@@ -31,7 +31,7 @@ class Player(object):
         fget = operator.attrgetter('_health')
         def fset(self, value):
             alive = self.alive
-            self._health = min(max(self._health, 0), self.max_health)
+            self._health = min(max(value, 0), self.max_health)
             if alive != self.alive:
                 pass #XXX player died (or was resurrected), notify someone?
         return property(fget, fset)
@@ -40,7 +40,7 @@ class Player(object):
     def draws():
         fget = operator.attrgetter('_draws')
         def fset(self, value):
-            self._draws = min(max(self._draws, 0), self.max_health)
+            self._draws = min(max(value, 0), self.max_health)
         return property(fget, fset)
 
     @property
