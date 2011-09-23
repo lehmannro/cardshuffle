@@ -1,5 +1,5 @@
 # encoding: utf-8
-# Copyright (C) 2010 Robert Lehmann
+# Copyright (C) 2010, 2011 Robert Lehmann
 
 from cardshuffle.cards import Card
 
@@ -252,4 +252,4 @@ class Shuffle(basic.LineOnlyReceiver):
     @players_only
     def command_discard(self, args):
         #XXX error handling
-        self.ingame.hand[int(slot)-1] = None
+        self.ingame.discard(int(slot))

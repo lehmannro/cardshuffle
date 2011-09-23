@@ -68,3 +68,6 @@ class Player(object):
         # but could be the same card if it still has charges left. Cards may
         # also decide to return wholly different cards.
         self.hand[slot] = self.hand[slot].apply(self, args)
+
+    def discard(self, slot):
+        self.hand[slot-1] = None
