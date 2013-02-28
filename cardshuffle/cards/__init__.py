@@ -54,7 +54,7 @@ class Card:
         previously located will become empty.
 
         NB. the actual work of returning the card into the hand is done by
-        Player, not the card itself.
+        `Player`, not the card itself.
 
         """
         # sanity checks
