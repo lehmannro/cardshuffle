@@ -45,7 +45,7 @@ class Session(object):
         for summon in self.summons:
             pass
 
-        # game over heuristics
+        #XXX game over heuristics
         if 0:
             raise GameOver
 
