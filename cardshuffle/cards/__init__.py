@@ -1,13 +1,13 @@
 # encoding: utf-8
 # Copyright (C) 2010 Robert Lehmann
 
+from cardshuffle.state import OutOfMana
+
 import re
 from collections import defaultdict
 
 TITLECASE = re.compile(r'(?<=.)([A-Z])')
 
-#XXX build a better exception hierarchy
-class OutOfMana(Exception): pass
 
 class Card:
     by_tag = defaultdict(list)

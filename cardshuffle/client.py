@@ -1,7 +1,8 @@
 # encoding: utf-8
-# Copyright (C) 2010, 2011 Robert Lehmann
+# Copyright (C) 2010, 2011, 2012 Robert Lehmann
 
 from cardshuffle.cards import Card
+from cardshuffle.state import OutOfMana
 
 from twisted.protocols import basic
 

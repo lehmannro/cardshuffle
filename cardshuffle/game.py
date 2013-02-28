@@ -4,9 +4,9 @@
 import itertools
 import random
 
-MAXTICKS = 65536
+from cardshuffle.state import GameOver
 
-class GameOver(StopIteration): pass
+MAXTICKS = 65536
 
 class Session(object):
     def __init__(self, players):
