@@ -90,6 +90,11 @@ class Lobby(MulticastServerFactory):
 
         self.broadcast(u"The battle begins..")
         self.game = Session(players)
+        # broadcasting IDs
+        # better not do this on `players` if someone connects in the meanwhile
+        for connection in connections:
+            if connection.ingame:
+                connection.sendLine("You are #%d." % connection.ingame.id)
         # mana
         self.mana_beat = task.LoopingCall(self.game.award_mana)
         self.mana_beat.start(self.manainterval)
