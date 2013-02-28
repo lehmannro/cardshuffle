@@ -170,7 +170,6 @@ class Shuffle(basic.LineOnlyReceiver):
             self.sendLine(u"· %s [%s] %s" %
                 (card.name, u"/".join(card.tags), card.desc))
 
-    #XXX add a clear command
     def command_random(self, args):
         """Fill up deck with random cards."""
         #XXX actually fill up the deck, do not replace it
@@ -179,6 +178,10 @@ class Shuffle(basic.LineOnlyReceiver):
         #                                      ^^^^
         #XXX hack to make up for our lack of cards
         self.list_cards(deck)
+
+    def command_clear(self, args):
+        """Erase your deck."""
+        self.deck = []
 
     def command_tags(self, args):
         """Show all available tags."""
