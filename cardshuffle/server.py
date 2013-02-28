@@ -114,6 +114,7 @@ class Lobby(MulticastServerFactory):
         assert self.game is not None, "cannot stop game if not running"
 
         if reason is not None: # Twisted wants to tell us something
+            print >>sys.stderr, reason
             self.broadcast(u"You broke it!")
 
         # nobody can possibly be playing after a game has stopped
