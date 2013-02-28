@@ -125,8 +125,9 @@ class Lobby(MulticastServerFactory):
         self.game = None
 
 def main(players, port=1030):
+    from cardshuffle.tap import Options
     from twisted.internet import reactor
-    factory = Lobby(dict(players=players))
+    factory = Lobby(Options())
     reactor.listenTCP(port, factory)
     reactor.run()
 
