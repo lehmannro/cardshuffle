@@ -5,6 +5,17 @@ from cardshuffle.state import HandIsFull, OutOfDraws
 import random
 import operator
 
+
+def managed_property(attr, maxattr, callback=None):
+    fget = operator.attrgetter(attr)
+    def fset(self, value):
+        old_value = fget(self)
+        new_value = min(max(value, 0), getattr(self, maxattr))
+        setattr(self, attr, new_value)
+        if callback:
+            callback(self, old_value, new_value)
+    return property(fget, fset)
+
 class Player(object):
     def __init__(self, name, deck, handsize,
                  mana, health, draws, max_draws):
@@ -23,29 +34,14 @@ class Player(object):
         ## self.hand = random.sample(self.deck, handsize)
         self.hand = [None] * handsize
 
-    @apply
-    def mana():
-        fget = operator.attrgetter('_mana')
-        def fset(self, value):
-            self._mana = min(max(value, 0), self.max_mana)
-        return property(fget, fset)
-
-    @apply
-    def health():
-        fget = operator.attrgetter('_health')
-        def fset(self, value):
-            alive = self.alive
-            self._health = min(max(value, 0), self.max_health)
-            if alive != self.alive:
-                pass #XXX player died (or was resurrected), notify someone?
-        return property(fget, fset)
-
-    @apply
-    def draws():
-        fget = operator.attrgetter('_draws')
-        def fset(self, value):
-            self._draws = min(max(value, 0), self.max_health)
-        return property(fget, fset)
+    mana = managed_property('_mana', 'max_mana')
+    def health_changed(self, old, new):
+        if new == 0 and old != 0:
+            pass #raise PlayerDied(self)
+        elif old == 0 and new != 0:
+            pass #raise PlayerResurrected(self)
+    health = managed_property('_health', 'max_health', health_changed)
+    draws = managed_property('_draws', 'max_draws')
 
     @property
     def alive(self):
