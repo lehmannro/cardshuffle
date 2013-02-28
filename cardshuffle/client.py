@@ -150,9 +150,9 @@ class Shuffle(basic.LineOnlyReceiver):
     @ingame
     def command_players(self, args):
         """Show all players in the current game."""
-        self.sendLine(u"Right fraction:")
+        self.sendLine(u"East fraction:")
         self.list_players(self.factory.game.west)
-        self.sendLine(u"Left fraction:")
+        self.sendLine(u"West fraction:")
         self.list_players(self.factory.game.east)
 
     def list_players(self, players):
