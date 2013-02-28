@@ -81,9 +81,11 @@ class Lobby(MulticastServerFactory):
         players = []
         for connection in connections:
             connection.ingame = player = Player(
-                connection.name, connection.deck, # set by session
+                # set by session
+                connection.name, connection.deck,
                 # set by configuration
-                self.handsize, self.mana, self.health, self.initialdraws)
+                self.handsize, self.mana, self.health,
+                self.initialdraws, self.draws)
             players.append(player)
 
         self.broadcast(u"The battle begins..")
