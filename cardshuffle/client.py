@@ -159,7 +159,7 @@ class Shuffle(basic.LineOnlyReceiver):
         for player in players:
             if player.alive:
                 self.sendLine(u"❥ %s #%d [%d/%d HP]" %
-                    (player.name, player.id, player.health, 0))
+                    (player.name, player.id, player.health, player.max_health))
                 #                                ^
                 #XXX store maximum health in players
             else:
