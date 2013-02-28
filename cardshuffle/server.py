@@ -62,6 +62,7 @@ class Lobby(MulticastServerFactory):
         self.healthinterval = config['regenerate']
         self.drawinterval = config['drawgain']
         self.initialdraws = config['initial-draws']
+        self.draws = config['draws']
 
     def check_readiness(self):
         """We have been pinged from one of our clients to check if we can

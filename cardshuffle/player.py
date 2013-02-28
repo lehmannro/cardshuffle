@@ -6,11 +6,13 @@ import random
 import operator
 
 class Player(object):
-    def __init__(self, name, deck, handsize, mana, health, draws):
+    def __init__(self, name, deck, handsize,
+                 mana, health, draws, max_draws):
         self.name = name
         self.deck = deck[:]
         self.max_mana = mana
         self.max_health = health
+        self.max_draws = max_draws
         # managed properties
         self._mana = 0
         self._health = health
