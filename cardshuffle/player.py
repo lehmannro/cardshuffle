@@ -1,4 +1,6 @@
-# Copyright (C) 2010, 2011 Robert Lehmann
+# Copyright (C) 2010, 2011, 2012 Robert Lehmann
+
+from cardshuffle.state import HandIsFull, OutOfDraws
 
 import random
 import operator
@@ -48,8 +50,10 @@ class Player(object):
         return self.health != 0
 
     def draw(self):
-        if None not in self.hand or not self.draws:
-            return # hand is full or drawing is not permitted, exit gracefully
+        if None not in self.hand:
+            raise HandIsFull
+        if not self.draws:
+            raise OutOfDraws
         self.draws -= 1
         slot = self.hand.index(None)
         card = random.choice(self.deck)
@@ -59,14 +63,14 @@ class Player(object):
 
     def use(self, slot, args=None):
         if not 1 <= slot <= len(self.hand):
-            return # invalid slot
+            raise ValueError # invalid slot
         slot -= 1
         if self.hand[slot] is None:
             return # selected slot is empty, exit gracefully
 
         # Use card and put its remains into its slot. This is ``None`` usually
-        # but could be the same card if it still has charges left. Cards may
-        # also decide to return wholly different cards.
+        # but could be the same card if it still has charges left.  Cards may
+        # also decide to decay into completely different cards.
         self.hand[slot] = self.hand[slot].apply(self, args)
 
     def discard(self, slot):

@@ -251,7 +251,10 @@ class Shuffle(basic.LineOnlyReceiver):
     @players_only
     def special_use(self, args):
         slot, args = args # slot is stored in args
-        self.ingame.use(slot, args)
+        try:
+            self.ingame.use(slot, args)
+        except OutOfMana:
+            return "Not enough mana"
 
     @players_only
     def command_discard(self, args):
