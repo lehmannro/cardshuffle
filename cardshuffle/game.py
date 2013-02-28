@@ -4,6 +4,7 @@
 import itertools
 import random
 
+from cardshuffle.summon import Summon
 from cardshuffle.state import GameOver
 
 MAXTICKS = 65536
@@ -30,13 +31,21 @@ class Session(object):
         self.ticks = 0
         self.summons = []
 
+
     def identify(self, entity):
         if not hasattr(entity, 'id'): # noop if already registered
-            # woo, O(1) over entity in self.entities
+                                      # woo, O(1) over entity in self.entities
             entity.id = len(self.entities)+1
             self.entities.append(entity)
+
+    def summon(self, card):
+        summon = Summon(card)
+        self.summons.append(summon)
+        self.identify(summon)
+
     def __getitem__(self, id):
         return self.entities[id-1]
+
 
     def tick(self):
         tick = self.ticks
@@ -57,6 +66,7 @@ class Session(object):
         """Hand out draw points to all players."""
         for player in self.players:
             player.draws += 1
+
     def award_mana(self):
         """Hand out one mana point to each player."""
         for player in self.players:
