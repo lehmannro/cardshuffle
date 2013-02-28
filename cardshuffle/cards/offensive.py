@@ -7,7 +7,7 @@ class DirectAttackSpell(Card):
 
     def cast(self, caster, args):
         target = caster.game[int(args)]
-        target.inflict(self.damage)
+        target.health -= self.damage
 
 class Fireball(DirectAttackSpell):
     mana = 40
